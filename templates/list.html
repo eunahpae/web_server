@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List Page</title>
+    <style>
+        table th {
+            background-color:pink;
+        }
+        
+        table th, tr, td  {
+            border: 1px solid #333;
+            text-align: center;
+        }
+    </style>
+  </head>
+  
+
+  <body>
+    <h1>LIST</h1>
+    <table action="/list" method="GET">
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Author</th>
+        <th>Time</th>
+        {% for i in data %}
+        <tr>
+            <td>{{ i['id'] }}</td>
+            <td>{{ i['title'] }}</td>
+            <td>{{ i['desc'] }}</td>
+            <td>{{ i['author'] }}</td>
+            <td>{{ i['create_at'] }}</td>
+        </tr>
+        <br>
+        {% endfor%}           
+    </table>
+  </body>
+</html>
+

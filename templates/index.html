@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Eunah's</title>
-   
-</head>
+  </head>
 
-<body>
-    <h1> Hello World!!! </h1>
-    <span>{{ header }}</span>
+  <body>
+    <h1>Hello World!!!</h1>
+    {% if name and hello %}
+    <h3>{{ name }}님, {{ hello }}</h3>
 
-
-</body>
-
+    {% else %}
+    <h3> 입력한 데이터가 없습니다.</h3>
+    {% endif %}
+  </body>
 </html>
