@@ -1,8 +1,7 @@
 import pymysql
 # 암호화 알고리즘. 256을 제일 많이 사용한다.
-from passlib.hash import pbkdf2_sha256 
-
 # 원문 비밀번호를, 암호화 하는 함수
+from passlib.hash import pbkdf2_sha256 
 
 def hash_password(original_password):
     salt = 'eungok'
@@ -45,6 +44,7 @@ class Mysql:
         print(result)
         db.commit()
         db.close()
+        return result
         
     def verify_password(self, email,password):
         db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
@@ -77,7 +77,7 @@ class Mysql:
         db.commit()
         db.close()
 
-mysql = Mysql(password='user')
+# mysql = Mysql(password='user')
 # rows = mysql.get_user()
 # print(rows) 
 
@@ -89,4 +89,4 @@ mysql = Mysql(password='user')
 # result = check_password("1234","$pbkdf2-sha256$29000$.p.T8t57jzGGEALAuNfaGw$Lm3obcbTTmBrCrHaGWA.k6/vReUBtvFtNq6yOr2Lmkc")
 # print(result)
 
-mysql.verify_password('d@naver.com','1234')
+# mysql.verify_password('d@naver.com','1234')

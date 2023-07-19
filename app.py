@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request
+from mysql import Mysql
 from data import Articles
-print(Articles())
+import config
+import pymysql
 
 app = Flask(__name__)
+mysql=Mysql(password=config.PASSWORD)
 
 @app.route('/' , methods=['GET','POST'])
 def index():
@@ -26,21 +29,39 @@ def index():
    
     #  render_template('index.html',jinja2문법(가변키워드인자로 전달받음) 파이썬언어는 {%~~~~%}, 전달할 데이터 직접전달시 {{~~~~}}  )
     
-# @app.route('/hello', methods=['GET','POST'])
-# def hello():
-#     if request.method == 'GET':
-#         return render_template('hello.html')
-#     elif request.method == 'POST':
-#         name = request.form["name"]
-#         hello = request.form["hello"]
-#         return render_template('index.html',name=name,hello=hello)
+
 
 @app.route('/list', methods=['GET'])
 def list():
     data = Articles()
     return render_template('list.html',data=data)
+
+@app.route('/register' , methods=['GET','POST'])
+def register():
+    if request.method == "POST":
+        user_name = request.form["user_name"] 
+        email = request.form["email"] 
+        phone = request.form["phone"] 
+        password = request.form["password"]  
+        print(user_name,email,phone,password)
         
-    
+        db = pymysql.connect(host=mysql.host, user=mysql.user, db=mysql.db, password=mysql.password, charset=mysql.charset)
+        curs = db.cursor()
+        sql=f'SELECT * FROM user WHERE email = %s;'
+        curs.execute(sql,email)
+        
+        rows = curs.fetchall()
+        print(rows)   
+            
+        if rows:
+            return "Persistance Denied"
+        else: 
+            result=mysql.insert_user(user_name,email,phone,password)
+            # print(result)
+            return "SUCCESS"
+    elif request.method == "GET":
+        return render_template('register.html')
+       
 
 if __name__ == '__main__':
     app.run(debug=True)
