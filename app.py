@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, session
 from mysql import Mysql
 from data import Articles
 import config
 import pymysql
 
 app = Flask(__name__)
+app.secret_key = "eungok"
 mysql=Mysql(password=config.PASSWORD)
 
 @app.route('/' , methods=['GET','POST'])
@@ -54,13 +55,14 @@ def register():
         print(rows)   
             
         if rows:
-            return "Persistance Denied"
+            
+            return render_template('register.html', data=1)
         else: 
             result=mysql.insert_user(user_name,email,phone,password)
             # print(result)
-            return "SUCCESS"
+            return redirect('/login')
     elif request.method == "GET":
-        return render_template('register.html')
+        return render_template('register.html',data=0)
     
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -78,9 +80,15 @@ def login():
          print(type(rows))   
             
          if rows:
-            return str(rows[0][0])
+             result = mysql.verify_password(password,rows[0][4])
+             if result:
+                 session['is_loged_in'] = True
+                 session['user_name'] = rows[0][1]
+                 return redirect('/')
+             else:
+                 return redirect('/login')
          else: 
-            return "User isnot founded."
+             return render_template('login.html')
 
        
 
