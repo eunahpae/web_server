@@ -98,6 +98,14 @@ def register():
     elif request.method == "GET":
         return render_template('register.html' , data= 0)
     
+@app.route('/create_list')
+def create_list():
+#     if request.method == "GET":
+        return render_template('dashboard.html')
+#     elif request.method == "POST":
+           
+    
+    
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
     if request.method == "GET":
