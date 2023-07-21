@@ -86,6 +86,7 @@ def register():
         curs.execute(sql , email)
         
         rows = curs.fetchall()
+        db.close()
         print(rows)
         if rows:
 
@@ -104,6 +105,7 @@ def create_list():
         return render_template('dashboard.html')
 #     elif request.method == "POST":
            
+
     
     
 @app.route('/login',  methods=['GET', 'POST'])
@@ -120,6 +122,7 @@ def login():
         curs.execute(sql , email)
         
         rows = curs.fetchall()
+        db.close()
         print(rows)
 
         if rows:
@@ -138,12 +141,38 @@ def login():
 def logout():
     session.clear()
     return redirect('/')
-@app.route('/edit/<ids>')
+@app.route('/edit/<ids>', methods=['GET', 'POST'])
 def edit(ids):
-    return ids
+    if request.method == 'GET':
+        db = pymysql.connect(host=mysql.host, user=mysql.user, db=mysql.db, password=mysql.password, charset=mysql.charset)
+        curs = db.cursor()
+
+        sql = f'SELECT * FROM list WHERE `id` = %s;'
+        curs.execute(sql , ids)
+            
+        rows = curs.fetchall()
+        print(rows)
+        db.close()
+        return render_template('list_edit.html', data=rows)
+    
+    elif request.method == 'POST':
+        
+        title = request.form['title']
+        desc = request.form['desc']
+        author = request.form['author']
+        
+        result = mysql.update_list(ids,title,desc,author)
+        print(result)
+        
+        return redirect('/list')        
+        
+
 @app.route('/delete/<ids>')
-def delete(ids):
-    return ids
+def delete(ids):                   
+        result = mysql.delete_list(ids)
+        print(result)
+               
+        return redirect('/list')   
     
 
 if __name__ == '__main__':

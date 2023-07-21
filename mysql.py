@@ -26,7 +26,7 @@ class Mysql:
         db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
         curs = db.cursor()
         
-        sql = "select * from user";
+        sql = "select * from user;"
         curs.execute(sql)
         
         rows = curs.fetchall()       
@@ -38,7 +38,7 @@ class Mysql:
         db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
         curs = db.cursor()
         
-        sql = "select * from list";
+        sql = "select * from list;"
         curs.execute(sql)
         
         rows = curs.fetchall()       
@@ -65,6 +65,30 @@ class Mysql:
         
         sql = '''insert into list (`title`,`desc`,`author`) values(%s,%s,%s)'''
         result=curs.execute(sql,(title, desc, author))
+        print(result)
+        db.commit()
+        db.close()
+        return result
+    
+    def update_list(self, id, title, desc, author):
+        db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
+        curs = db.cursor()
+        
+        sql = f'update list set `title`=%s,`desc`=%s,`author`=%s where `id`=%s;'
+        
+        result=curs.execute(sql,[title, desc, author,id])
+        print(result)
+        db.commit()
+        db.close()
+        return result
+    
+    def delete_list(self, id):
+        db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
+        curs = db.cursor()
+        
+        sql = f'delete from list where `id`=%s;'
+        
+        result=curs.execute(sql,[id])
         print(result)
         db.commit()
         db.close()

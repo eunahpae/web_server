@@ -1,0 +1,39 @@
+{% extends "layouts.html" %}
+{% block nav %}
+{% include 'nav.html' %}
+{% endblock %}
+{% block body %}
+<form action="/edit/{{ data[0][0] }}" method="post">
+  <!-- 2 column grid layout with text inputs for the first and last names -->
+  <div class="row mb-4" style="margin-top: 3rem;">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Edit Page</h4>
+      <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+      <hr>
+      <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>   
+  </div>
+
+
+  <!-- Text input -->
+  <div class="form-outline mb-4">
+    <input type="text" name="title" id="form6Example3" class="form-control"  value= "{{ data[0][1] }}">
+    <label class="form-label" for="form6Example3">Title</label>
+  </div> 
+  
+  <!-- Message input -->
+  <div class="form-outline mb-4">
+    <textarea class="form-control" name="desc" id="form6Example7" rows="4">{{  data[0][2] }}</textarea>
+    <label class="form-label" for="form6Example7">Description</label>
+  </div>
+
+  <div class="form-outline mb-4">
+    <input type="text" name="author" id="form6Example3" class="form-control" value= "{{  data[0][3] }}">
+    <label class="form-label" for="form6Example3">Author</label>
+  </div>
+ 
+  
+  <!-- Submit button -->
+  <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button>
+</form>
+{% endblock %}
